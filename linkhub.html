@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LinkHub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#FAF7F2;color:#1C1410;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#C8BBAD;border-radius:4px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.rise{animation:rise .35s ease both}
+
+header{background:#fff;border-bottom:1px solid #E8E0D5;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.hdr{max-width:1100px;margin:0 auto;padding:0 18px;height:54px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:6px}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#6D28D9,#EC4899);display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
+.logo-text{font-weight:900;font-size:17px;color:#1C1410;white-space:nowrap}
+nav{display:flex;gap:5px;flex:1;overflow-x:auto}
+nav::-webkit-scrollbar{height:0}
+.nbtn{padding:6px 13px;border-radius:999px;border:1.5px solid #E8E0D5;background:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;color:#4A3F35}
+.nbtn:hover{transform:translateY(-1px)}
+.srch{display:flex;align-items:center;gap:6px;background:#FAF7F2;border:1px solid #E8E0D5;border-radius:8px;padding:5px 10px;flex-shrink:0}
+.srch input{background:none;border:none;outline:none;font-size:11px;width:130px;color:#1C1410;font-family:inherit}
+.nbell{position:relative;background:#FAF7F2;border:1px solid #E8E0D5;border-radius:8px;padding:6px 8px;cursor:pointer;font-size:15px;flex-shrink:0}
+.ndot{position:absolute;top:3px;right:3px;width:14px;height:14px;border-radius:50%;background:#E11D48;color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:11px}
+
+.wrap{max-width:1100px;margin:0 auto;padding:20px 18px;display:grid;grid-template-columns:215px 1fr;gap:20px}
+aside{display:flex;flex-direction:column;gap:13px}
+.card{background:#fff;border:1px solid #E8E0D5;border-radius:15px;padding:15px}
+.clbl{font-size:10px;font-weight:700;color:#8C7B6E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.me-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.me-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding-top:11px;border-top:1px solid #E8E0D5;text-align:center}
+.sq-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.jbtn{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;border:none;background:transparent;font-size:11px;font-weight:500;cursor:pointer;width:100%;color:#4A3F35;transition:all .15s;font-family:inherit}
+.jbtn:hover{background:rgba(109,40,217,.06)}
+
+.ft{height:26px;background:#1C1410;display:flex;align-items:center;padding:0 22px;gap:16px;flex-shrink:0}
+.fdot{display:flex;align-items:center;gap:4px;font-size:9px;color:#6B5E52;font-family:monospace}
+
+/* ZONE */
+.zh{border-radius:18px;padding:24px 24px 50px;margin-bottom:-28px;position:relative;overflow:hidden}
+.zlbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.ztitle{font-size:23px;font-weight:900;margin:0 0 4px}
+.zsub{font-size:12px;margin:0 0 14px;opacity:.8}
+.ztabs{display:flex;gap:7px;flex-wrap:wrap}
+.ztab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;border:1.5px solid transparent;font-family:inherit}
+.zbody{background:#fff;border-radius:18px;border:1px solid #E8E0D5;padding:40px 24px 24px;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+
+/* ITEMS */
+.ic{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:12px;padding:14px 16px;margin-bottom:11px;transition:transform .2s,box-shadow .2s}
+.ic:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(0,0,0,.08)}
+.irow{display:flex;gap:11px}
+.chip{font-size:10px;font-weight:600;border-radius:20px;padding:2px 8px;display:inline-flex;border:1px solid transparent;margin:2px}
+.abtn{padding:4px 11px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+.acbtn{padding:7px 15px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit}
+.sk{border-radius:10px;padding:10px 11px;transition:transform .2s}
+.sk:hover{transform:translateY(-1px)}
+.skbars{display:flex;gap:3px;margin:5px 0 4px}
+.skbar{width:13px;height:4px;border-radius:2px}
+.hub-li{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;border:1.5px solid #E8E0D5;background:#fff;cursor:pointer;margin-bottom:7px;transition:all .17s}
+.hub-li:hover{transform:translateY(-1px)}
+.vcard{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:11px;padding:13px 15px;margin-bottom:10px}
+.cred{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #E8E0D5;border-radius:10px;padding:11px 14px;margin-bottom:9px;transition:transform .2s}
+.cred:hover{transform:translateY(-1px)}
+.safe-c{background:#fff;border:1.5px solid #E8E0D5;border-radius:12px;padding:14px}
+.shc{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:13px;padding:15px 17px;margin-bottom:11px;transition:transform .2s}
+.shc:hover{transform:translateY(-2px)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.g3{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.gsafe{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:11px}
+.hubgrid{display:grid;grid-template-columns:190px 1fr;gap:16px}
+.fw{display:flex;flex-wrap:wrap;gap:6px}
+.frow{display:flex;align-items:center;gap:8px}
+.fbetw{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px}
+
+/* ONBOARD */
+#ob{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 18px;background:linear-gradient(160deg,#FAF7F2,#F0EBF8,#FAF7F2)}
+.ob-logo{display:flex;align-items:center;gap:10px;margin-bottom:38px}
+.ob-logo-i{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#6D28D9,#EC4899);display:flex;align-items:center;justify-content:center;font-size:21px;color:#fff}
+.ob-steps{display:flex;gap:7px;margin-bottom:28px}
+.ob-pip{height:8px;border-radius:4px;transition:all .3s}
+.ob-card{background:#fff;border:1px solid #E8E0D5;border-radius:22px;padding:32px 34px;max-width:540px;width:100%;box-shadow:0 18px 55px rgba(0,0,0,.09);display:flex;flex-direction:column;align-items:center;gap:20px}
+.ob-title{font-size:26px;font-weight:900;color:#1C1410;text-align:center;line-height:1.2;margin-bottom:5px}
+.ob-sub{font-size:13px;color:#4A3F35;text-align:center;line-height:1.6}
+.ig{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:470px}
+.ipill{padding:8px 15px;border-radius:999px;border:2px solid #E8E0D5;background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .17s;color:#4A3F35;font-family:inherit}
+.ipill:hover{transform:scale(1.04)}
+.obn{width:100%;padding:12px;border:none;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;color:#fff;font-family:inherit}
+.obb{background:none;border:none;color:#8C7B6E;font-size:12px;cursor:pointer;margin-top:-8px;font-family:inherit}
+.spcard{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #E8E0D5;border-radius:11px;padding:11px 13px;box-shadow:0 2px 7px rgba(0,0,0,.05);margin-bottom:10px}
+.fi{width:100%;max-width:430px;display:flex;flex-direction:column;gap:12px}
+.fl{font-size:12px;font-weight:700;color:#4A3F35;display:block;margin-bottom:4px}
+.finput{width:100%;background:#fff;border:1.5px solid #E8E0D5;border-radius:9px;padding:10px 12px;font-size:13px;color:#1C1410;outline:none;font-family:inherit}
+.finput:focus{border-color:#6D28D9}
+.hint{background:#EDE9FF;border:1px solid rgba(109,40,217,.18);border-radius:9px;padding:11px 13px}
+.post-play{margin:9px 0 10px;height:170px;border-radius:14px;background:linear-gradient(135deg,#FCE7F3,#EDE9FE,#DBEAFE);display:flex;align-items:center;justify-content:center;gap:12px}
+.play-btn{width:42px;height:42px;border-radius:50%;background:#fff;color:#E11D48;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+
+@media (max-width: 920px){
+  .wrap{grid-template-columns:1fr}
+  aside{order:2}
+  .hubgrid{grid-template-columns:1fr}
+}
+
+@media (max-width: 720px){
+  .hdr{padding:0 12px;gap:8px}
+  .srch{display:none}
+  .zbody{padding:36px 16px 18px}
+  .zh{padding:20px 16px 46px}
+  .ob-card{padding:24px 18px}
+  .g2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="ob">
+  <div class="ob-logo">
+    <div class="ob-logo-i">✦</div>
+    <div>
+      <div style="font-weight:900;font-size:22px;color:#1C1410;line-height:1">LinkHub</div>
+      <div style="font-size:11px;color:#8C7B6E">Your campus, your world</div>
+    </div>
+  </div>
+  <div class="ob-steps" id="ob-steps"></div>
+  <div class="ob-card rise" id="ob-card"></div>
+</div>
+
+<div id="app" style="display:none;flex-direction:column;min-height:100vh">
+  <header>
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-icon">✦</div>
+        <span class="logo-text">LinkHub</span>
+      </div>
+      <nav id="mnav"></nav>
+      <div class="srch"><span>🔍</span><input placeholder="Search..."/></div>
+      <button class="nbell" onclick="clrN()">🔔<div class="ndot" id="ndot">4</div></button>
+      <div class="av" style="width:32px;height:32px;background:linear-gradient(135deg,
+        #6D28D944,#6D28D966);color:#6D28D9;border:2px solid #6D28D9;
+        box-shadow:0 0 0 3px #fff,0 0 0 5px rgba(109,40,217,.3)">YO</div>
+    </div>
+  </header>
+  <div class="wrap">
+    <aside>
+      <div class="card">
+        <div class="me-row">
+          <div class="av" style="width:42px;height:42px;font-size:13px;
+            background:linear-gradient(135deg,#6D28D944,#6D28D966);
+            color:#6D28D9;border:2px solid #6D28D9;
+            box-shadow:0 0 0 3px #fff,0 0 0 4px rgba(109,40,217,.3)">YO</div>
+          <div>
+            <div style="font-size:13px;font-weight:700">You</div>
+            <div style="font-size:10px;color:#8C7B6E">Computer Science · 2nd Year</div>
+            <div style="font-size:10px;color:#6D28D9;font-style:italic">figuring life out 🌱</div>
+          </div>
+        </div>
+        <div class="me-stats">
+          <div><div style="font-size:16px;font-weight:900;color:#6D28D9">12</div>
+               <div style="font-size:9px;color:#8C7B6E;font-weight:600">Vouches</div></div>
+          <div><div style="font-size:16px;font-weight:900;color:#059669">3</div>
+               <div style="font-size:9px;color:#8C7B6E;font-weight:600">Squads</div></div>
+          <div><div style="font-size:16px;font-weight:900;color:#0284C7">5</div>
+               <div style="font-size:9px;color:#8C7B6E;font-weight:600">Gigs</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="clbl">Your Newbie Squad</div>
+        <div id="sbsq"></div>
+        <button style="width:100%;background:#FAF7F2;border:1px solid #E8E0D5;
+          border-radius:8px;padding:7px;font-size:11px;font-weight:700;
+          color:#4A3F35;cursor:pointer;font-family:inherit">Open Squad Chat →</button>
+      </div>
+      <div class="card">
+        <div class="clbl">Jump To</div>
+        <div id="sbnav"></div>
+      </div>
+    </aside>
+    <main id="zc"></main>
+  </div>
+  <div class="ft" id="ft"></div>
+</div>
+
+<script>
+// ===== ALL DATA ARRAYS =====
+const S=[
+  {id:1,name:"Priya Sharma",  major:"Biology + Graphic Design",year:"3rd Year",
+   av:"PS",color:"#A855F7",uni:"IIT Bombay",   vf:true, v:24,mood:"studying rn 📚"},
+  {id:2,name:"Arjun Mehta",   major:"CS + Music Production",   year:"2nd Year",
+   av:"AM",color:"#3B82F6",uni:"BITS Pilani",  vf:true, v:18,mood:"shipping something cool 🚀"},
+  {id:3,name:"Zara Ahmed",    major:"Business + Theatre",       year:"4th Year",
+   av:"ZA",color:"#F97316",uni:"Delhi Univ",   vf:true, v:31,mood:"coffee ☕ + pitch deck"},
+  {id:4,name:"Leo Fernandes", major:"Architecture + Web Dev",   year:"1st Year",
+   av:"LF",color:"#22C55E",uni:"SPA Delhi",    vf:false,v:7, mood:"exploring campus 🗺️"},
+  {id:5,name:"Kavya Nair",    major:"Psychology + UX Research", year:"3rd Year",
+   av:"KN",color:"#EC4899",uni:"Christ Univ",  vf:true, v:22,mood:"running user interviews 🎤"},
+];
+const INTS=[
+  {id:"music",  lb:"🎵 Music",        c:"#A855F7"},
+  {id:"ai",     lb:"🧠 AI & Tech",    c:"#3B82F6"},
+  {id:"art",    lb:"🎨 Visual Art",   c:"#F97316"},
+  {id:"sus",    lb:"🌿 Sustainability",c:"#22C55E"},
+  {id:"film",   lb:"🎬 Film",         c:"#EC4899"},
+  {id:"code",   lb:"💻 Coding",        c:"#14B8A6"},
+  {id:"cafe",   lb:"☕ Café Culture",  c:"#A16207"},
+  {id:"glob",   lb:"🌍 Global Issues", c:"#6366F1"},
+  {id:"write",  lb:"✍️ Writing",      c:"#0EA5E9"},
+  {id:"photo",  lb:"📸 Photography",  c:"#F43F5E"},
+  {id:"music2", lb:"🎤 Live Music",   c:"#8B5CF6"},
+  {id:"biz",    lb:"📈 Business",     c:"#10B981"},
+];
+const IDEAS=[
+  {id:1,au:2,title:"Campus Mental Health App",
+   desc:"A peer-support matching app for students feeling overwhelmed. Need dev + UX researcher.",
+   tags:["MentalHealth","Tech"],stage:"Concept",hearts:47,seek:["Developer","UX Designer"]},
+  {id:2,au:1,title:"AI-Generated Zine Monthly",
+   desc:"Students submit prompts monthly, we create a zine using AI tools + hand-edited art.",
+   tags:["Art","AI","Print"],stage:"Draft",hearts:83,seek:["Artist","Writer"]},
+  {id:3,au:0,title:"Urban Biodiversity Map",
+   desc:"Mapping every plant & bird species on campus. Could become a citizen science paper.",
+   tags:["Biology","Sustainability"],stage:"Research",hearts:29,seek:["Developer","Researcher"]},
+  {id:4,au:3,title:"Affordable Housing Visualizer",
+   desc:"3D visualizations of student housing - architecture meets social justice.",
+   tags:["Architecture","Social"],stage:"Concept",hearts:38,seek:["Data Analyst","Dev"]},
+];
+const HUBS=[
+  {id:1,name:"IIT Bombay",    members:1240,active:89, color:"#6D28D9",icon:"🏛️",
+   posts:["Best Vada Pav near H8 hostel?","Late night coding spots??","AC library tips"]},
+  {id:2,name:"Sustainability",members:8420,active:234,color:"#059669",icon:"🌱",
+   posts:["COP30 delegation apps open","Zero-waste dorm challenge!","Campus carbon paper"]},
+  {id:3,name:"Mental Health", members:3100,active:67, color:"#EC4899",icon:"💜",safe:true,
+   posts:["Sharing: my anxiety toolkit","Anyone struggling with finals?","Free therapy slots"]},
+  {id:4,name:"First Gen",     members:2800,active:45, color:"#F59E0B",icon:"🌟",safe:true,
+   posts:["Navigating family expectations","Scholarship nobody tells you about","Imposter syndrome"]},
+  {id:5,name:"Web3 & Crypto", members:4200,active:156,color:"#0284C7",icon:"⛓️",
+   posts:["Best resources to learn Solidity?","Student DAO next month","a16z internship"]},
+];
+const FEED=[
+  {id:1,au:0,type:"video",
+   content:"Day in my life as a biology major who draws 🎨🔬 - 6am lab to 11pm Wacom tablet",
+   likes:412,cmts:38,time:"2h ago",tags:["DayInLife","BiologyMajor"]},
+  {id:2,au:2,type:"text",
+   content:"Hot take: the best networking in college is NOT at placement drives. It's at 2am in the canteen. The people working on passion projects at weird hours - those are your future co-founders.",
+   likes:891,cmts:67,time:"4h ago",tags:["CampusLife","HotTake"]},
+  {id:3,au:1,type:"video",
+   content:"Honest dorm room tour - yes that is a synthesizer, yes my roommates hate me 🎹😭",
+   likes:2103,cmts:145,time:"6h ago",tags:["DormLife","Music"]},
+  {id:4,au:4,type:"text",
+   content:"PSA for 1st years: you don't have to have a 5-year plan. Pick 2-3 things you're curious about and do them badly for a while. The confidence comes from doing, not planning.",
+   likes:3240,cmts:211,time:"1d ago",tags:["Advice","MentalHealth"]},
+];
+const GIGS=[
+  {id:1,po:0,title:"Need graduation photographer",
+   desc:"DSLR for my convocation. 3 hrs, flexible.",budget:"₹1,500",
+   tags:["Photography","Event"],urgent:true},
+  {id:2,po:1,title:"Calculus tutor for JEE dropper",
+   desc:"2 sessions/week. Someone who's done JEE themselves.",budget:"₹400/hr",
+   tags:["Tutoring","Maths"]},
+  {id:3,po:2,title:"Pitch deck design",
+   desc:"Have the content, need beautiful Figma slides.",budget:"₹2,000",
+   tags:["Design","Startup"]},
+  {id:4,po:3,title:"Moving help (end of semester)",
+   desc:"Move boxes to storage. Will pay + buy lunch.",budget:"₹500+lunch",
+   tags:["Physical","Quickjob"]},
+];
+const MENTORS=[
+  {id:1,name:"Rohit Kapoor",role:"Senior @ Google",  av:"RK",
+   color:"#3B82F6",spec:"Tech Interviews",  ok:true, n:47},
+  {id:2,name:"Anjali Singh", role:"MBA @ IIM A",     av:"AS",
+   color:"#EC4899",spec:"Startup Strategy",ok:true, n:31},
+  {id:3,name:"Dev Raman",    role:"PhD @ Stanford",  av:"DR",
+   color:"#22C55E",spec:"Research & Grants",ok:false,n:28},
+];
+const SHADOWS=[
+  {id:1,co:"Zepto",    role:"Product Manager Shadow",
+   dur:"1 day",  loc:"Bangalore",spots:3,tags:["Product","Startup"],dl:"Mar 15"},
+  {id:2,co:"BBC India",role:"Journalism Micro-Internship",
+   dur:"2 weeks",loc:"Remote",   spots:5,tags:["Writing","Media"],  dl:"Mar 20"},
+  {id:3,co:"NCF",      role:"Field Research Shadow",
+   dur:"3 days", loc:"Mysore",   spots:2,tags:["Biology","Field"],  dl:"Apr 1"},
+];
+
+// ===== STATE =====
+let cz="pro",ahub=1,obst=0,selInt=[];
+let liked={},saved={},appG={},appSh={},contM={},appId={};
+let ptab="profile",ctab="sandbox",stab="hubs",otab="hustle";
+let vouches=[
+  {id:1,fi:2,txt:"Priya was an incredible team lead at our sustainability hackathon.",
+   ctx:"🌿 Climate Hack 2024",time:"2 weeks ago"},
+  {id:2,fi:1,txt:"Genuinely one of the most reliable researchers I've worked with.",
+   ctx:"🔬 Psych 101 Lab",time:"1 month ago"},
+];
+
+// ===== PART 3: HELPERS, ONBOARDING, APP SHELL =====
+
+// --- HELPERS ---
+const a=(p,sz=36,ring=false,rc=null)=>{
+  const c=rc||p.color;
+  const sh=ring?`box-shadow:0 0 0 3px #fff,0 0 0 5px ${c}44`:'';
+  const bd=ring?`border:2.5px solid ${c}`:`border:1.5px solid ${p.color}33`;
+  return `<div class="av" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*.32)}px;
+    background:linear-gradient(135deg,${p.color}22,${p.color}44);${bd};
+    color:${p.color};${sh}">${p.av}</div>`;
+};
+const ch=(t,c)=>
+  `<span class="chip" style="color:${c};background:${c}18;border-color:${c}28">#${t}</span>`;
+
+// --- ONBOARDING ---
+function robStep(){
+  document.getElementById('ob-steps').innerHTML=[0,1,2].map(i=>
+    `<div class="ob-pip" style="width:${i===obst?28:8}px;
+     background:${i<=obst?'#6D28D9':'#E8E0D5'}"></div>`
+  ).join('');
+  const el=document.getElementById('ob-card');
+
+  if(obst===0){
+    el.innerHTML=`
+      <div>
+        <div class="ob-title">What lights you up? ✨</div>
+        <div class="ob-sub">Pick up to 5 interests - what you actually care about.</div>
+      </div>
+      <div class="ig">
+        ${INTS.map(({id,lb,c})=>{
+          const on=selInt.includes(id);
+          return `<button class="ipill" onclick="togI('${id}','${c}')"
+            style="color:${on?c:'#4A3F35'};border-color:${on?c:'#E8E0D5'};
+            background:${on?c+'18':'#fff'}">${lb}${on?' ✓':''}</button>`;
+        }).join('')}
+      </div>
+      <button class="obn" id="obn" onclick="obNx()"
+        ${selInt.length<3?'disabled':''}
+        style="background:${selInt.length>=3
+          ?'linear-gradient(135deg,#6D28D9,#9333EA)':'#E8E0D5'};
+        color:${selInt.length>=3?'#fff':'#8C7B6E'}">
+        Continue with ${selInt.length} interests →
+      </button>`;
+
+  } else if(obst===1){
+    el.innerHTML=`
+      <div>
+        <div class="ob-title">Meet your Newbie Squad 👋</div>
+        <div class="ob-sub">5 students with similar interests. First task: introduce yourself.</div>
+      </div>
+      <div style="width:100%;max-width:430px">
+        ${S.slice(0,4).map((s,i)=>`
+          <div class="spcard rise" style="animation-delay:${i*.09}s">
+            ${a(s,42,true)}
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:700">
+                ${s.name} ${s.vf?'<span style="color:#6D28D9;font-size:11px">✓</span>':''}
+              </div>
+              <div style="font-size:10px;color:#8C7B6E">${s.major} · ${s.uni}</div>
+              <div style="font-size:10px;color:${s.color};font-style:italic">${s.mood}</div>
+            </div>
+            <div style="background:${s.color}18;border:1px solid ${s.color}28;
+              border-radius:7px;padding:2px 8px;font-size:9px;font-weight:700;
+              color:${s.color}">${s.year}</div>
+          </div>`).join('')}
+      </div>
+      <button class="obn" style="background:linear-gradient(135deg,#6D28D9,#9333EA)"
+        onclick="obNx()">Start the Squad →</button>
+      <button class="obb" onclick="obBk()">← Back</button>`;
+
+  } else {
+    el.innerHTML=`
+      <div>
+        <div class="ob-title">Co-create your first Project Card 🃏</div>
+        <div class="ob-sub">One tiny shared thing. A playlist, a list, an idea.</div>
+      </div>
+      <div class="fi">
+        <div>
+          <label class="fl">Name your squad</label>
+          <input class="finput" id="sqn" type="text"
+            placeholder="e.g. Midnight Builders, Chai & Code..."
+            oninput="updOb()"/>
+        </div>
+        <div>
+          <label class="fl">First micro-project idea</label>
+          <textarea class="finput" rows="3"
+            placeholder="e.g. A playlist of songs that helped us survive exams...">
+          </textarea>
+        </div>
+        <div class="hint">
+          <div style="font-size:11px;font-weight:700;color:#6D28D9;margin-bottom:3px">
+            ✨ First Squad Task
+          </div>
+          <div style="font-size:11px;color:#4A3F35;line-height:1.6">
+            Share your Project Card in the Squad chat. Even a rough idea counts.
+          </div>
+        </div>
+      </div>
+      <button class="obn" id="obn" onclick="launch()" disabled
+        style="background:#E8E0D5;color:#8C7B6E">Launch my LinkHub 🚀</button>
+      <button class="obb" onclick="obBk()">← Back</button>`;
+  }
+}
+
+function togI(id,c){
+  selInt.includes(id)
+    ? selInt=selInt.filter(x=>x!==id)
+    : selInt.length<5 && selInt.push(id);
+  robStep();
+}
+function updOb(){
+  const v=document.getElementById('sqn')?.value||'';
+  const b=document.getElementById('obn');
+  if(!b)return;
+  const ok=v.trim().length>2;
+  b.disabled=!ok;
+  b.style.background=ok?'linear-gradient(135deg,#6D28D9,#9333EA)':'#E8E0D5';
+  b.style.color=ok?'#fff':'#8C7B6E';
+}
+function obNx(){obst++;robStep();}
+function obBk(){obst--;robStep();}
+function launch(){
+  document.getElementById('ob').style.display='none';
+  const app=document.getElementById('app');
+  app.style.display='flex';
+  initApp();
+}
+
+// --- APP SHELL ---
+function initApp(){renderNav();renderSbSq();renderSbNav();renderFt();renderZ();}
+
+function renderNav(){
+  const zs=[
+    {z:'pro',  lb:'💼 Professional',c:'#6D28D9'},
+    {z:'collab',lb:'🎨 Collaboration',c:'#059669'},
+    {z:'social',lb:'🤝 Social',       c:'#E11D48'},
+    {z:'opp',  lb:'🚀 Opportunity',   c:'#0284C7'},
+  ];
+  document.getElementById('mnav').innerHTML=zs.map(({z,lb,c})=>
+    `<button class="nbtn" onclick="swZ('${z}')"
+      style="border-color:${cz===z?c:'#E8E0D5'};
+      background:${cz===z?c+'14':'#fff'};
+      color:${cz===z?c:'#4A3F35'}">${lb}</button>`
+  ).join('');
+}
+
+function renderSbNav(){
+  const zs=[
+    {z:'pro',  lb:'💼 Professional',c:'#6D28D9'},
+    {z:'collab',lb:'🎨 Collaboration',c:'#059669'},
+    {z:'social',lb:'🤝 Social',       c:'#E11D48'},
+    {z:'opp',  lb:'🚀 Opportunity',   c:'#0284C7'},
+  ];
+  document.getElementById('sbnav').innerHTML=zs.map(({z,lb,c})=>
+    `<button class="jbtn" onclick="swZ('${z}')"
+      style="background:${cz===z?c+'10':'transparent'};
+      color:${cz===z?c:'#4A3F35'};font-weight:${cz===z?700:500}">
+      ${lb}${cz===z?'<span style="margin-left:auto">›</span>':''}
+    </button>`
+  ).join('');
+}
+
+function renderSbSq(){
+  document.getElementById('sbsq').innerHTML=S.slice(0,3).map(s=>`
+    <div class="sq-row">
+      ${a(s,26)}
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:600">${s.name}</div>
+        <div style="font-size:9px;color:#8C7B6E">${s.year}</div>
+      </div>
+      <div style="width:6px;height:6px;border-radius:50%;
+        background:${s.vf?'#059669':'#8C7B6E'}"></div>
+    </div>`).join('');
+}
+
+function renderFt(){
+  const items=[
+    ['Auth','#059669'],['WebSockets','#0284C7'],
+    ['AI Match','#F5C842'],['Zero-Knowledge','#E11D48'],['Pinecone DB','#059669']
+  ];
+  document.getElementById('ft').innerHTML=
+    items.map(([l,c])=>
+      `<div class="fdot">
+        <div style="width:5px;height:5px;border-radius:50%;
+          background:${c};animation:pulse 2s infinite"></div>
+        ${l}
+      </div>`).join('')+
+    `<div style="margin-left:auto;font-size:9px;color:#3A302A;font-family:monospace">
+      LinkHub v1.0 · edu-verified · privacy-first
+    </div>`;
+}
+
+function clrN(){document.getElementById('ndot').style.display='none';}
+
+function swZ(z){
+  cz=z;
+  ptab='profile';ctab='sandbox';stab='hubs';otab='hustle';
+  renderNav();renderSbNav();renderZ();
+}
+
+function renderZ(){
+  const el=document.getElementById('zc');
+  if(cz==='pro')     el.innerHTML=rPro();
+  else if(cz==='collab') el.innerHTML=rCollab();
+  else if(cz==='social') el.innerHTML=rSocial();
+  else               el.innerHTML=rOpp();
+}
+
+// ===== PART 4: ALL 4 ZONE RENDERERS + BOOT =====
+
+// ---- PRO ZONE ----
+function sPTab(t){ptab=t;renderZ();}
+function subV(){
+  const el=document.getElementById('vi');
+  if(!el||!el.value.trim())return;
+  vouches.push({id:Date.now(),fi:Math.floor(Math.random()*5),
+    txt:el.value.trim(),ctx:"✍️ Direct Vouch",time:"Just now"});
+  renderZ();
+}
+function rPro(){
+  const tabs=['profile','vouches','credentials'];
+  const th=tabs.map(t=>{const on=ptab===t;
+    return `<button class="ztab" onclick="sPTab('${t}')"
+      style="border-color:${on?'#F5C842':'#F5C84244'};
+      background:${on?'#F5C842':'transparent'};
+      color:${on?'#1A1040':'#F5C842'}">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`;
+  }).join('');
+  let body='';
+  if(ptab==='profile'){
+    const ps=S[0];
+    const sks=[
+      {s:"Biology",          l:5,c:"#22C55E",v:true},
+      {s:"Graphic Design",   l:5,c:"#A855F7",v:true},
+      {s:"Digital Art",      l:4,c:"#F97316",v:false},
+      {s:"Research Methods", l:4,c:"#0EA5E9",v:true},
+      {s:"Figma",            l:3,c:"#EC4899",v:false},
+      {s:"Sci. Writing",     l:4,c:"#6D28D9",v:false},
+    ];
+    body=`
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap">
+        ${a(ps,68,true,'#F5C842')}
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="font-size:20px;font-weight:900">${ps.name}</span>
+            <span style="background:#EDE9FF;border:1px solid rgba(109,40,217,.18);
+              border-radius:20px;padding:3px 9px;font-size:10px;font-weight:700;
+              color:#6D28D9">🛡 edu verified</span>
+          </div>
+          <div style="font-size:12px;color:#4A3F35;margin-top:3px">
+            ${ps.major} · ${ps.year} · ${ps.uni}
+          </div>
+          <div style="font-size:11px;color:#8C7B6E;font-style:italic;margin-top:2px">
+            ${ps.mood}
+          </div>
+          <div style="display:flex;gap:16px;margin-top:11px">
+            ${[['24','Vouches'],['3','Badges'],['6','Projects']].map(([v,l])=>
+              `<div>
+                <div style="font-size:17px;font-weight:900">${v}</div>
+                <div style="font-size:10px;color:#8C7B6E">${l}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="font-size:11px;font-weight:700;color:#8C7B6E;text-transform:uppercase;
+          letter-spacing:.07em;margin-bottom:10px">Skill Web</div>
+        <div class="g3">
+          ${sks.map(({s,l,c,v})=>`
+            <div class="sk" style="background:${c}0E;border:1.5px solid ${c}28">
+              <div style="font-size:11px;font-weight:700;color:${c};margin-bottom:4px">${s}</div>
+              <div class="skbars">
+                ${[1,2,3,4,5].map(i=>
+                  `<div class="skbar" style="background:${i<=l?c:c+'28'}"></div>`
+                ).join('')}
+              </div>
+              ${v?`<div style="font-size:9px;font-weight:700;color:${c};
+                background:${c}18;border-radius:9px;padding:1px 5px;
+                display:inline-block">VERIFIED</div>`:''}
+            </div>`).join('')}
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#8C7B6E;text-transform:uppercase;
+          letter-spacing:.07em;margin-bottom:10px">Achievement Badges</div>
+        <div class="fw">
+          ${[['🎨','Design Level 5','#6D28D9'],['🔬','Lab Excellence','#22C55E'],
+             ['🌍','Social Impact','#0EA5E9'],['🎯','Side-Hustle','#F59E0B']].map(([e,n,c])=>
+            `<div style="display:flex;align-items:center;gap:7px;background:${c}0E;
+              border:1.5px solid ${c}28;border-radius:10px;padding:6px 12px;
+              font-size:11px;font-weight:700;color:${c}">${e} ${n}</div>`
+          ).join('')}
+        </div>
+      </div>`;
+  } else if(ptab==='vouches'){
+    body=`
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px">
+        Peer Vouches (${vouches.length})
+      </div>
+      ${vouches.map(v=>{const s=S[v.fi];return`
+        <div class="vcard">
+          <div style="display:flex;gap:10px">
+            ${a(s,32,true)}
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px">
+                <span style="font-weight:700;font-size:12px">${s.name}</span>
+                <span style="font-size:10px;color:#8C7B6E">${v.time}</span>
+              </div>
+              <div style="font-size:12px;color:#4A3F35;line-height:1.6;
+                margin-top:5px;font-style:italic">"${v.txt}"</div>
+              <div style="font-size:10px;font-weight:600;color:#6D28D9;margin-top:5px">
+                ${v.ctx}
+              </div>
+            </div>
+          </div>
+        </div>`;}).join('')}
+      <div style="background:#EDE9FF;border:1px solid rgba(109,40,217,.18);
+        border-radius:12px;padding:15px">
+        <div style="font-size:12px;font-weight:700;color:#6D28D9;margin-bottom:8px">
+          Write a Vouch
+        </div>
+        <textarea id="vi" class="finput" rows="3"
+          placeholder="What did you see this person do that deserves recognition?"
+          style="margin-bottom:9px"></textarea>
+        <button class="acbtn" onclick="subV()"
+          style="background:#6D28D9;color:#fff">Send Vouch</button>
+      </div>`;
+  } else {
+    body=`
+      <div style="font-size:12px;color:#4A3F35;margin-bottom:16px;line-height:1.6">
+        Verified by your university. You control what recruiters see.
+      </div>
+      ${[{c:"Advanced Cell Biology",cr:4,g:"A",s:"Sem 5",i:"🔬"},
+         {c:"Visual Communication Design",cr:3,g:"A+",s:"Sem 4",i:"🎨"},
+         {c:"Research Methodology",cr:3,g:"B+",s:"Sem 3",i:"📊"},
+         {c:"Environmental Science",cr:2,g:"A",s:"Sem 4",i:"🌿"}].map(x=>`
+        <div class="cred">
+          <div style="font-size:21px">${x.i}</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700">${x.c}</div>
+            <div style="font-size:10px;color:#8C7B6E">${x.cr} credits · ${x.s}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:17px;font-weight:900;color:#6D28D9">${x.g}</div>
+            <div style="font-size:9px;color:#6D28D9;font-weight:700">🛡 VERIFIED</div>
+          </div>
+        </div>`).join('')}`;
+  }
+  return `<div class="rise">
+    <div class="zh" style="background:#1A1040">
+      <div class="zlbl" style="color:#F5C842">💼 Professional Zone</div>
+      <div class="ztitle" style="color:#FAF8FF">Your Latticed Profile</div>
+      <div class="zsub" style="color:#C4B5FD">Not a resume. A web of everything you are.</div>
+      <div class="ztabs">${th}</div>
+    </div>
+    <div class="zbody">${body}</div>
+  </div>`;
+}
+
+// ---- COLLAB ZONE ----
+function sCTab(t){ctab=t;renderZ();}
+function apId(k){appId[k]=true;renderZ();}
+function rCollab(){
+  const tabs={sandbox:"Public Drafts",squads:"AI Squad Match",assets:"Asset Library"};
+  const th=Object.entries(tabs).map(([t,lb])=>{const on=ctab===t;
+    return `<button class="ztab" onclick="sCTab('${t}')"
+      style="border-color:${on?'#4ADE80':'#4ADE8044'};
+      background:${on?'#4ADE80':'transparent'};
+      color:${on?'#0D2E1A':'#4ADE80'}">${lb}</button>`;
+  }).join('');
+  let body='';
+  if(ctab==='sandbox'){
+    body=`
+      <div class="fbetw" style="margin-bottom:14px">
+        <div style="font-size:12px;color:#4A3F35">
+          ${IDEAS.length} drafts seeking collaborators
+        </div>
+        <button class="acbtn"
+          style="background:#DCFCE7;border:1px solid rgba(5,150,105,.2);color:#059669">
+          + Post Draft
+        </button>
+      </div>
+      ${IDEAS.map((idea,i)=>{
+        const au=S[idea.au];
+        const sc=idea.stage==='Concept'?'#92400E':idea.stage==='Draft'?'#059669':'#6D28D9';
+        const sb=idea.stage==='Concept'?'#FEF3C7':idea.stage==='Draft'?'#DCFCE7':'#EDE9FF';
+        return `<div class="ic rise" style="animation-delay:${i*.07}s">
+          <div class="irow">
+            ${a(au,34)}
+            <div style="flex:1">
+              <div class="fbetw">
+                <div>
+                  <div style="font-size:13px;font-weight:700">${idea.title}</div>
+                  <div style="font-size:11px;color:#8C7B6E">${au.name}</div>
+                </div>
+                <div style="background:${sb};color:${sc};font-size:10px;
+                  font-weight:700;border-radius:20px;padding:2px 8px">
+                  ${idea.stage}
+                </div>
+              </div>
+              <p style="font-size:12px;color:#4A3F35;line-height:1.6;margin:7px 0 8px">
+                ${idea.desc}
+              </p>
+              <div class="fw" style="margin-bottom:9px">
+                ${idea.tags.map(t=>ch(t,'#059669')).join('')}
+              </div>
+              <div class="fbetw">
+                <div class="fw">
+                  ${idea.seek.map(s=>{
+                    const k=idea.id+'_'+s;const done=appId[k];
+                    return `<button class="abtn" onclick="apId('${k}')"
+                      style="color:${done?'#fff':'#059669'};
+                      background:${done?'#059669':'#DCFCE7'};
+                      border:1px solid rgba(5,150,105,.22)">
+                      ${done?'✓ '+s:'Join as '+s}
+                    </button>`;
+                  }).join('')}
+                </div>
+                <span style="font-size:11px;color:#8C7B6E">❤ ${idea.hearts}</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}`;
+  } else if(ctab==='squads'){
+    const sq=[
+      {idea:"Sustainable Fashion App",m:[2,1,0],
+       why:"Zara's biz strategy + Arjun's tech + Priya's design = MVP",c:96},
+      {idea:"Campus Accessibility Map",m:[3,4,1],
+       why:"Leo's spatial + Kavya's UX + Arjun's dev = social impact product",c:91},
+    ];
+    body=`
+      <div style="background:#DCFCE7;border:1px solid rgba(5,150,105,.18);
+        border-radius:12px;padding:15px;margin-bottom:18px">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="background:#059669;border-radius:8px;padding:9px;font-size:19px">🧠</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#059669">
+              Multi-Disciplinary Match Engine
+            </div>
+            <div style="font-size:11px;color:#4A3F35">
+              AI pairs Business + Dev + Design students to launch real products
+            </div>
+          </div>
+        </div>
+      </div>
+      ${sq.map((s,i)=>`
+        <div class="ic rise" style="animation-delay:${i*.1}s">
+          <div class="fbetw" style="margin-bottom:11px">
+            <div style="font-size:13px;font-weight:700">${s.idea}</div>
+            <div style="font-size:16px;font-weight:900;color:#059669">${s.c}% fit</div>
+          </div>
+          <div style="display:flex;margin-bottom:10px">
+            ${s.m.map((idx,j)=>
+              `<div style="margin-left:${j===0?0:-8}px;z-index:${10-j}">
+                ${a(S[idx],32,true,'#059669')}
+              </div>`).join('')}
+          </div>
+          <div class="fw" style="margin-bottom:9px">
+            ${s.m.map(idx=>
+              `<div style="background:${S[idx].color}18;border:1px solid ${S[idx].color}28;
+                border-radius:7px;padding:2px 8px;font-size:10px;font-weight:700;
+                color:${S[idx].color}">
+                ${S[idx].major.split(' + ')[0]}
+              </div>`).join('')}
+          </div>
+          <p style="font-size:12px;color:#4A3F35;line-height:1.6;
+            margin-bottom:12px;font-style:italic">${s.why}</p>
+          <button class="acbtn" style="background:#059669;color:#fff">
+            Accept Squad Invite →
+          </button>
+        </div>`).join('')}`;
+  } else {
+    const ast=[
+      {n:"Research Paper Template",by:4,dl:247,i:"📄",t:"Academic"},
+      {n:"Startup Pitch Deck",     by:2,dl:583,i:"📊",t:"Business"},
+      {n:"Brand Identity Kit",     by:0,dl:129,i:"🎨",t:"Design"},
+      {n:"ML Model Boilerplate",   by:1,dl:341,i:"🤖",t:"Tech"},
+    ];
+    body=`
+      <div class="fbetw" style="margin-bottom:15px">
+        <div style="font-size:12px;color:#4A3F35">Community templates & assets</div>
+        <button class="acbtn"
+          style="background:#DCFCE7;border:1px solid rgba(5,150,105,.2);color:#059669">
+          ↑ Upload
+        </button>
+      </div>
+      <div class="g2">
+        ${ast.map(as=>`
+          <div style="background:#fff;border:1px solid #E8E0D5;border-radius:11px;
+            padding:13px;cursor:pointer;transition:transform .2s"
+            onmouseover="this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.transform=''">
+            <div style="font-size:24px;margin-bottom:8px">${as.i}</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:3px">${as.n}</div>
+            <div style="font-size:10px;color:#8C7B6E;margin-bottom:7px">
+              by ${S[as.by].name} · ${as.dl} downloads
+            </div>
+            <div class="fbetw">
+              ${ch(as.t,'#059669')}
+              <button style="font-size:10px;font-weight:700;color:#059669;
+                background:none;border:none;cursor:pointer">Download →</button>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+  return `<div class="rise">
+    <div class="zh" style="background:#0D2E1A">
+      <div class="zlbl" style="color:#4ADE80">🎨 Collaboration Zone</div>
+      <div class="ztitle" style="color:#F0FDF4">Idea Sandbox</div>
+      <div class="zsub" style="color:#86EFAC">Half-baked is the right start. Find your people.</div>
+      <div class="ztabs">${th}</div>
+    </div>
+    <div class="zbody">${body}</div>
+  </div>`;
+}
+
+// ---- SOCIAL ZONE ----
+function sSTab(t){stab=t;renderZ();}
+function swHub(id){ahub=id;renderZ();}
+function togL(id){liked[id]=!liked[id];renderZ();}
+function togS(id){saved[id]=!saved[id];renderZ();}
+function rSocial(){
+  const tabs={hubs:"Hubs",feed:"Real Feed",safe:"Safe Spaces"};
+  const th=Object.entries(tabs).map(([t,lb])=>{const on=stab===t;
+    return `<button class="ztab" onclick="sSTab('${t}')"
+      style="border-color:${on?'#FB7185':'#FB718544'};
+      background:${on?'#FB7185':'transparent'};
+      color:${on?'#2E0D1A':'#FB7185'}">${lb}</button>`;
+  }).join('');
+  let body='';
+  if(stab==='hubs'){
+    const hub=HUBS.find(h=>h.id===ahub)||HUBS[0];
+    body=`
+      <div class="hubgrid">
+        <div>
+          ${HUBS.map(h=>`
+            <div class="hub-li" onclick="swHub(${h.id})"
+              style="border-color:${ahub===h.id?h.color:'#E8E0D5'};
+              background:${ahub===h.id?h.color+'12':'#fff'}">
+              <div style="font-size:16px">${h.icon}</div>
+              <div style="flex:1">
+                <div style="font-size:11px;font-weight:700">${h.name}</div>
+                <div style="font-size:9px;color:#8C7B6E">
+                  ${h.members.toLocaleString()} members
+                </div>
+              </div>
+              ${h.safe?'<span>🔒</span>':''}
+            </div>`).join('')}
+        </div>
+        <div>
+          <div class="fbetw" style="margin-bottom:14px">
+            <div>
+              <div style="font-size:18px;font-weight:900">${hub.icon} ${hub.name}</div>
+              <div style="font-size:11px;color:#8C7B6E">
+                ${hub.members.toLocaleString()} members ·
+                <span style="color:${hub.color};font-weight:600">${hub.active} online</span>
+              </div>
+            </div>
+            ${hub.safe?`<div style="display:flex;align-items:center;gap:5px;
+              background:#FFE4E6;border:1px solid rgba(225,29,72,.18);
+              border-radius:20px;padding:4px 11px;font-size:11px;
+              font-weight:700;color:#E11D48">🔒 Verified Only</div>`:''}
+          </div>
+          ${hub.posts.map((p,i)=>`
+            <div class="ic rise" style="animation-delay:${i*.06}s">
+              <div style="font-size:12px;color:#1C1410;line-height:1.5;margin-bottom:7px">
+                ${p}
+              </div>
+              <div style="display:flex;gap:10px">
+                <button style="font-size:10px;color:#8C7B6E;background:none;
+                  border:none;cursor:pointer">💬 Reply</button>
+                <button style="font-size:10px;color:#8C7B6E;background:none;
+                  border:none;cursor:pointer">❤ Like</button>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  } else if(stab==='feed'){
+    body=`
+      <div style="font-size:12px;color:#4A3F35;margin-bottom:12px">
+        Unfiltered. Real. Campus life as it actually is.
+      </div>
+      ${FEED.map((p,i)=>{const au=S[p.au];return`
+        <div class="ic" style="animation-delay:${i*.07}s">
+          <div class="irow">
+            ${a(au,34,true)}
+            <div style="flex:1">
+              <div class="fbetw">
+                <span style="font-weight:700;font-size:12px">
+                  ${au.name}
+                  <span style="font-weight:400;color:#8C7B6E;font-size:10px">
+                    ${p.time}
+                  </span>
+                </span>
+                ${p.type==='video'?`<span style="background:#FFE4E6;
+                  border:1px solid rgba(225,29,72,.18);border-radius:5px;
+                  padding:2px 6px;font-size:9px;font-weight:700;
+                  color:#E11D48">▶ VIDEO</span>`:''}
+              </div>
+              ${p.type==='video'?`<div class="post-play">
+                <div class="play-btn">▶</div>
+                <span style="font-size:20px">🎬</span>
+              </div>`:''}
+              <p style="font-size:12px;color:#4A3F35;line-height:1.65;margin:7px 0 9px">
+                ${p.content}
+              </p>
+              <div class="fw" style="margin-bottom:9px">
+                ${p.tags.map(t=>ch(t,'#E11D48')).join('')}
+              </div>
+              <div style="display:flex;gap:13px">
+                <button onclick="togL(${p.id})"
+                  style="font-size:11px;color:${liked[p.id]?'#E11D48':'#8C7B6E'};
+                  background:none;border:none;cursor:pointer;
+                  font-weight:${liked[p.id]?700:400}">
+                  ${liked[p.id]?'❤':'🤍'} ${p.likes+(liked[p.id]?1:0)}
+                </button>
+                <button style="font-size:11px;color:#8C7B6E;background:none;
+                  border:none;cursor:pointer">💬 ${p.cmts}</button>
+                <button onclick="togS(${p.id})"
+                  style="margin-left:auto;font-size:11px;
+                  color:${saved[p.id]?'#F59E0B':'#8C7B6E'};
+                  background:none;border:none;cursor:pointer">
+                  ${saved[p.id]?'🔖':'📌'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>`;}).join('')}`;
+  } else {
+    const sps=[
+      {n:"LGBTQIA+ Students", i:"🏳️‍🌈",m:1240,
+       d:"A home for queer students. Share, celebrate, support.",c:"#A855F7"},
+      {n:"First Gen College",  i:"🌟",     m:2800,
+       d:"Navigating systems nobody taught us about. Together.",c:"#F59E0B"},
+      {n:"International",      i:"✈️",      m:3400,
+       d:"Culture shock, visa stress, midnight homesickness.",c:"#0EA5E9"},
+      {n:"Neurodivergent",     i:"🧠",      m:980,
+       d:"ADHD, autism, dyslexia - thriving on our own terms.",c:"#22C55E"},
+    ];
+    body=`
+      <div style="background:#FFE4E6;border:1px solid rgba(225,29,72,.18);
+        border-radius:12px;padding:14px;margin-bottom:18px">
+        <div style="font-size:12px;font-weight:700;color:#E11D48">
+          🔒 Verified .edu members only
+        </div>
+        <div style="font-size:11px;color:#4A3F35;margin-top:3px;line-height:1.6">
+          What's shared here, stays here.
+        </div>
+      </div>
+      <div class="gsafe">
+        ${sps.map(s=>`
+          <div class="safe-c">
+            <div style="font-size:24px;margin-bottom:8px">${s.i}</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:4px">${s.n}</div>
+            <div style="font-size:11px;color:#8C7B6E;line-height:1.5;margin-bottom:8px">
+              ${s.d}
+            </div>
+            <div style="font-size:10px;color:#8C7B6E;margin-bottom:8px">
+              ${s.m.toLocaleString()} members
+            </div>
+            <button style="width:100%;background:${s.c}14;border:1px solid ${s.c}28;
+              color:${s.c};border-radius:8px;padding:7px;font-size:10px;
+              font-weight:700;cursor:pointer">Request to Join</button>
+          </div>`).join('')}
+      </div>`;
+  }
+  return `<div class="rise">
+    <div class="zh" style="background:#2E0D1A">
+      <div class="zlbl" style="color:#FB7185">🤝 Social Zone</div>
+      <div class="ztitle" style="color:#FFF1F2">Find Your People</div>
+      <div class="zsub" style="color:#FDA4AF">Hyper-local hubs, real feeds, safe spaces.</div>
+      <div class="ztabs">${th}</div>
+    </div>
+    <div class="zbody">${body}</div>
+  </div>`;
+}
+
+// ---- OPPORTUNITY ZONE ----
+function sOTab(t){otab=t;renderZ();}
+function apG(id){appG[id]=true;renderZ();}
+function ctM(id){contM[id]=true;renderZ();}
+function apSh(id){appSh[id]=true;renderZ();}
+function rOpp(){
+  const tabs={hustle:"Side-Hustle Market",mentors:"Mentorship Match",shadow:"Shadow Portal"};
+  const th=Object.entries(tabs).map(([t,lb])=>{const on=otab===t;
+    return `<button class="ztab" onclick="sOTab('${t}')"
+      style="border-color:${on?'#38BDF8':'#38BDF844'};
+      background:${on?'#38BDF8':'transparent'};
+      color:${on?'#0D1A2E':'#38BDF8'}">${lb}</button>`;
+  }).join('');
+  let body='';
+  if(otab==='hustle'){
+    body=`
+      <div class="fbetw" style="margin-bottom:14px">
+        <div style="font-size:12px;color:#4A3F35">Students hiring students. No middlemen.</div>
+        <button class="acbtn"
+          style="background:#E0F2FE;border:1px solid rgba(2,132,199,.2);color:#0284C7">
+          + Post a Gig
+        </button>
+      </div>
+      ${GIGS.map((g,i)=>{const po=S[g.po];return`
+        <div class="ic rise" style="animation-delay:${i*.07}s">
+          <div class="irow">
+            ${a(po,34)}
+            <div style="flex:1">
+              <div class="fbetw">
+                <div style="font-size:13px;font-weight:700">${g.title}</div>
+                <div style="display:flex;align-items:center;gap:6px">
+                  ${g.urgent?`<span style="background:#FEF3C7;color:#92400E;
+                    font-size:9px;font-weight:700;border-radius:20px;
+                    padding:2px 7px">⚡ URGENT</span>`:''}
+                  <span style="font-size:13px;font-weight:900;color:#0284C7">
+                    ${g.budget}
+                  </span>
+                </div>
+              </div>
+              <div style="font-size:10px;color:#8C7B6E;margin-top:3px">
+                ${po.name} · ${po.uni}
+              </div>
+              <p style="font-size:12px;color:#4A3F35;line-height:1.6;margin:7px 0 9px">
+                ${g.desc}
+              </p>
+              <div class="fbetw">
+                <div class="fw">${g.tags.map(t=>ch(t,'#0284C7')).join('')}</div>
+                <button onclick="apG(${g.id})"
+                  style="background:${appG[g.id]?'#DCFCE7':'#0284C7'};
+                  color:${appG[g.id]?'#059669':'#fff'};
+                  border:${appG[g.id]?'1px solid #059669':'none'};
+                  border-radius:8px;padding:5px 13px;font-size:11px;
+                  font-weight:700;cursor:pointer">
+                  ${appG[g.id]?'✓ Applied!':'Apply →'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>`;}).join('')}`;
+  } else if(otab==='mentors'){
+    body=`
+      <div style="background:#E0F2FE;border:1px solid rgba(2,132,199,.18);
+        border-radius:12px;padding:14px;margin-bottom:18px">
+        <div style="font-size:12px;font-weight:700;color:#0284C7;margin-bottom:3px">
+          🤝 How it works
+        </div>
+        <div style="font-size:11px;color:#4A3F35;line-height:1.6">
+          AI matches you with alumni based on your goals. 1 session = 45 min.
+        </div>
+      </div>
+      ${MENTORS.map((m,i)=>`
+        <div class="shc" style="animation-delay:${i*.08}s">
+          <div style="display:flex;gap:12px">
+            ${a(m,44,true,m.ok?'#0284C7':'#8C7B6E')}
+            <div style="flex:1">
+              <div class="fbetw">
+                <div>
+                  <div style="font-size:13px;font-weight:700">${m.name}</div>
+                  <div style="font-size:11px;font-weight:600;color:#0284C7">${m.role}</div>
+                  <div style="font-size:10px;color:#8C7B6E">${m.n} sessions done</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;
+                  background:${m.ok?'#DCFCE7':'#F3F4F6'};
+                  border:1px solid ${m.ok?'#059669':'#E8E0D5'};
+                  border-radius:20px;padding:3px 9px;align-self:flex-start">
+                  <div style="width:5px;height:5px;border-radius:50%;
+                    background:${m.ok?'#059669':'#8C7B6E'}"></div>
+                  <span style="font-size:10px;font-weight:700;
+                    color:${m.ok?'#059669':'#8C7B6E'}">
+                    ${m.ok?'Available':'Full this week'}
+                  </span>
+                </div>
+              </div>
+              <div style="background:rgba(232,224,213,.5);border-radius:7px;
+                padding:5px 9px;margin-top:8px;display:inline-block;
+                font-size:11px;color:#4A3F35">
+                Speciality: <strong style="color:#0284C7">${m.spec}</strong>
+              </div>
+            </div>
+          </div>
+          ${m.ok?`<button onclick="ctM(${m.id})"
+            style="margin-top:10px;background:${contM[m.id]?'#DCFCE7':'#0284C7'};
+            color:${contM[m.id]?'#059669':'#fff'};border:none;border-radius:8px;
+            padding:7px 16px;font-size:11px;font-weight:700;cursor:pointer">
+            ${contM[m.id]?"✓ Request sent! They'll respond within 24h":"Request 1-on-1 Session"}
+          </button>`:''}
+        </div>`).join('')}`;
+  } else {
+    body=`
+      <div style="font-size:12px;color:#4A3F35;margin-bottom:16px;line-height:1.6">
+        Shadow a professional for a day or join a micro-internship.
+      </div>
+      ${SHADOWS.map((s,i)=>`
+        <div class="shc rise" style="animation-delay:${i*.08}s">
+          <div class="fbetw" style="margin-bottom:10px">
+            <div>
+              <div style="font-size:13px;font-weight:700">${s.role}</div>
+              <div style="font-size:12px;font-weight:700;color:#0284C7">${s.co}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-size:11px;color:#8C7B6E">⏱ ${s.dur}</span>
+              <span style="font-size:11px;color:#8C7B6E">📍 ${s.loc}</span>
+            </div>
+          </div>
+          <div class="fw" style="margin-bottom:11px">
+            ${s.tags.map(t=>ch(t,'#0284C7')).join('')}
+          </div>
+          <div class="fbetw">
+            <div style="display:flex;gap:10px">
+              <span style="font-size:11px;color:#8C7B6E">
+                <b style="color:#0284C7">${s.spots}</b> spots left
+              </span>
+              <span style="font-size:11px;color:#8C7B6E">Apply by <b>${s.dl}</b></span>
+            </div>
+            <button onclick="apSh('${s.id}')"
+              style="background:${appSh[s.id]?'#DCFCE7':'#0284C7'};
+              color:${appSh[s.id]?'#059669':'#fff'};border:none;
+              border-radius:8px;padding:7px 16px;font-size:11px;
+              font-weight:700;cursor:pointer">
+              ${appSh[s.id]?'✓ Applied!':'Apply Now →'}
+            </button>
+          </div>
+        </div>`).join('')}`;
+  }
+  return `<div class="rise">
+    <div class="zh" style="background:#0D1A2E">
+      <div class="zlbl" style="color:#38BDF8">🚀 Opportunity Zone</div>
+      <div class="ztitle" style="color:#F0F9FF">Build Your Future</div>
+      <div class="zsub" style="color:#7DD3FC">
+        Side hustles, mentors, shadows, micro-internships.
+      </div>
+      <div class="ztabs">${th}</div>
+    </div>
+    <div class="zbody">${body}</div>
+  </div>`;
+}
+
+// ===== BOOT =====
+robStep();
+</script>
+</body>
+</html>

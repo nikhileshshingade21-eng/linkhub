@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   LinkHub Design System
+   ============================================ */
+
+:root {
+  /* Brand Colors */
+  --lh-purple: #6D28D9;
+  --lh-purple-light: #8B5CF6;
+  --lh-purple-glow: rgba(109, 40, 217, 0.15);
+  --lh-pink: #EC4899;
+  --lh-green: #059669;
+  --lh-green-light: #4ADE80;
+  --lh-red: #E11D48;
+  --lh-blue: #0284C7;
+  --lh-blue-light: #38BDF8;
+  --lh-gold: #F5C842;
+  --lh-orange: #F97316;
+
+  /* Surfaces */
+  --lh-bg: #FAF7F2;
+  --lh-surface: #FFFFFF;
+  --lh-border: #E8E0D5;
+  --lh-border-hover: #D1C7B8;
+
+  /* Text */
+  --lh-text-primary: #1C1410;
+  --lh-text-secondary: #4A3F35;
+  --lh-text-muted: #8C7B6E;
+
+  /* Radius */
+  --lh-radius-sm: 8px;
+  --lh-radius-md: 12px;
+  --lh-radius-lg: 18px;
+  --lh-radius-xl: 22px;
+  --lh-radius-pill: 999px;
+
+  /* Shadows */
+  --lh-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --lh-shadow-md: 0 4px 18px rgba(0, 0, 0, 0.08);
+  --lh-shadow-lg: 0 18px 55px rgba(0, 0, 0, 0.09);
+  --lh-shadow-glow: 0 0 30px rgba(109, 40, 217, 0.12);
+
+  /* Font */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- Global Reset ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--lh-bg);
+  color: var(--lh-text-primary);
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb {
+  background: #C8BBAD;
+  border-radius: 4px;
+}
+
+/* ---- Animations ---- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-rise {
+  animation: rise 0.35s ease both;
+}
+
+.animate-fade {
+  animation: fadeIn 0.3s ease both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ---- Utilities ---- */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, var(--lh-purple), var(--lh-pink));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--lh-purple), var(--lh-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--lh-purple);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth transitions on interactive elements */
+a, button, input, select, textarea {
+  transition: all 0.2s ease;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
