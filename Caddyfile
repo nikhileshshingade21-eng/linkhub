@@ -1,4 +1,4 @@
-linkhub.cloud-ip.cc {
+:80 {
     # Route API requests to backend container
     handle_path /api* {
         reverse_proxy backend:3001
