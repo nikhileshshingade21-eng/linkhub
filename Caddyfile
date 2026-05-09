@@ -1,6 +1,6 @@
 linkhubnew.duckdns.org {
     # Route API requests to backend container
-    handle_path /api* {
+    handle /api* {
         reverse_proxy backend:3001
     }
 
