@@ -1,0 +1,16 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Expose backend port
+EXPOSE 3001
+
+# Run the production build via tsx directly
+# (Or you can compile to JS, but tsx is fine for MVP)
+CMD ["npx", "tsx", "api/src/server.ts"]
